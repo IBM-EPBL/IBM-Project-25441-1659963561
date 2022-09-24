@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}about{% endblock %}
+
+{% block body %}
+{% include 'nav.html' %}
+<!--About Us-->
+<section class="min-vh-100 py-5">
+    <div class="container mt-5">
+        <div class="text-center display-5 fw-bold">About Us</div>
+        <div class="container">
+          {% for i in range(3) %}
+            <!--1-->
+            <div class="d-flex align-items-center my-5 my-lg-0">
+                <div class=""><img src="../static/img/k-13935.jpg" alt="" class="img-fluid rounded-circle"></div>
+                <div class="p-5">
+                    <div class="h3 fw-bold">Nithinton Prakash</div>
+                    <div class="fs-5 mt-3">Frontend developer</div>
+                </div>
+            </div>
+            <!--2-->
+            <div class="d-flex align-items-center my-5 my-lg-0">
+                <div class="p-5 ms-auto">
+                    <div class="h3 fw-bold">Alagappan</div>
+                    <div class="fs-5 mt-3">Backend Developer</div>
+                </div>
+                <div class=""><img src="../static/img/k-13935.jpg" alt="" class="img-fluid rounded-circle"></div>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
