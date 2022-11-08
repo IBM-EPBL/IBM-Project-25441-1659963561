@@ -1,1 +1,2 @@
 ![](https://github.com/IBM-EPBL/IBM-Project-25441-1659963561/blob/main/Personal%20Expense%20Tracker/Assessments/Team%20Lead%20(NITHINTON)/Assignment%203/storage%20%26%20watson/Output%20Screenshot/1.PNG)
+![](https://github.com/IBM-EPBL/IBM-Project-25441-1659963561/blob/main/Personal%20Expense%20Tracker/Assessments/Team%20Lead%20(NITHINTON)/Assignment%203/storage%20%26%20watson/Output%20Screenshot/2.PNG)
