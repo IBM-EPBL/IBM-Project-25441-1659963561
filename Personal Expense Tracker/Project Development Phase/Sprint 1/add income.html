@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add income</title>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<style>
+  .head{
+    text-align: center;
+  }
+  .center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 40%;
+    padding-top: 40px;
+    padding-bottom: 15px;
+    border-color: rgb(248, 248, 247);
+    
+  }
+  body{
+    margin: 10%;
+    padding: 0%;
+    font-family: montserrat;
+    height: 100vh;
+    overflow: hidden;  
+}
+</style>
+</head>
+
+
+<body>
+<div class="head">
+  <h2>Add Income</h2>
+</div>
+<div class="center">
+  <div class="form-control">
+      <div class="mb=3">
+    <label for="exampleInputName1" class="form-label">Income source</label>
+    <input type="text" class="form-control" placeholder="eg:Office salary">
+  </div>
+  <div class="mb=3">
+     <label for="account">Amount</label>
+     <input type="text" class="form-control" placeholder="eg:30,000">
+  </div>
+  <div class="mb=3">
+      <label for="Income Details">Income Details</label>
+      <input type="text" class="form-control" placeholder="Monthly salary">
+      <br><button type="submit" class="btn btn-dark w-100">submit</button></br>
+    </div>
+</div>
+    <script src="script.js"></script>
+  </body>
+</html>

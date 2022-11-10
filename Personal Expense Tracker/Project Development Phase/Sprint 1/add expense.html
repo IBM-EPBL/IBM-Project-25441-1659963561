@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+ 
+</head>
+<style>
+.center{
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%,-50%);
+width: 50%;
+background-color: rgb(255, 255, 255);
+border: radius 12px; ;
+
+ }
+ 
+ .head{
+    text-align: center;
+     margin-bottom: 10%;
+ }
+</style>
+  <body>
+    <!--Form-->
+        <div class="center">
+           <div class="head">
+            <h1>Add Expense</h1>
+           
+            </div> <div class="mb=3">
+                <label for="exampleInputName1" class="form-label">Name</label>
+          <input type="Text" class="form-control">
+        </div>
+        <div class="mb=3">
+            <label for="date">Date</label>
+            <input type="date" class="form-control" id="date">
+        </div>
+        <div class="mb=3">
+            <label for="amount">Amount</label>
+            <input type="text" class="form-control" id="amount">
+        </div>
+        <div class="mb=3">
+            <label for="type">Category</label>
+            <select id="type" input type="text" class="form-control" id="amount">
+                <option value="chooseOne">Choose one...</option>
+                <option value="Book">Book</option>
+                <option value="Beauty product">Beauty product</option>
+                <option value="Cloths">cloths</option>
+                <option value="Groceries ">Groceries</option>
+                <option value="Electronic product">Electronic product</option> 
+            </select>
+        </div>
+        
+       <br> <button type="submit" class="btn btn-dark w-100">Add Expense</button></br>
+    </form>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+  </body>
+</html>
