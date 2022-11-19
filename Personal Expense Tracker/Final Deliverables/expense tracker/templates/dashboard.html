@@ -1,0 +1,400 @@
+{% extends 'base.html' %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block head %} 
+<style>
+  .divide > *{
+    flex-basis: 100%;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+
+{% with msgs = get_flashed_messages() %}
+{% if msgs %}
+{% for msg in msgs %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{msg}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+  <!--dashboard-->
+  <section class="mt-5 min-vh-100">
+  <div class="container">
+    <!--Quick Expense-->
+    <div class="d-flex justify-content-between align-items-center gap-4 flex-column flex-sm-row">
+      <div class="fs-4 fw-bold">Dashboard</div>
+      <div class="">
+        <button class="btn btn-dark px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#payerModal" >Add Payer</button>
+        <button class="btn btn-dark px-4 rounded-pill" data-bs-toggle="modal" data-bs-target="#expenseModal" >Add Quick Expense</button>
+      </div>
+      <!--payer Model-->
+      <div class="modal fade" id="payerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Add Payer</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('dashboard') }}" method="POST">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="payer" class="form-label">Payer Name</label>
+                  <input type="text" class="form-control" id="payer" name="payer">
+                </div>             
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" value = "add_payer" name = "submit">Add payer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!--Expense Modal -->
+      <div class="modal fade" id="expenseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Add Quick Expense</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('dashboard') }}" method="POST">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <input type="text" class="form-control" id="description" name="description">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Category</label>
+                  <select class="form-select mb-3" name="category">
+                    <option value="Others" >Others</option>
+                    <option value="Housing">Housing</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Personal Care">Personal Care</option>
+                    <option value="Giving">Giiving</option>
+                    <option value="Food">Food</option>
+                    <option value="Health">Health</option>
+                    <option value="Savings">Savings</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="date" class="form-label">Date</label>
+                  <input type="date" class="form-control" name="date">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Payer</label>
+                  <select class="form-select mb-3" name="payer">
+                    <option value="{{data['user'].fname}}">{{data['user'].fname}}</option>
+                    {% for payer in data["payersOption"] %}
+                      <option value="{{payer.name}}">{{payer.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="amount" class="form-label">Amount</label>
+                  <input type="number" placeholder="₹" class="form-control" id="amount" name="amount">
+                </div>
+                
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" value = "quick_expense" name = "submit">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Expense stats-->
+    <div class="row mt-4 row-cols-2 gy-3 row-cols-md-4">
+      <div class="col">
+        <div class="card text-bg-dark">
+          <div class="card-header fw-bold">Balance</div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold">₹ {{data["balance"]}}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-bg-primary">
+          <div class="card-header fw-bold">2022 Expenses</div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold">₹ {{data["yearlyStats"]}}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-bg-info">
+          <div class="card-header fw-bold">Monthly Expenses</div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold">₹ {{data["monthlyStats"]}}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-bg-warning">
+          <div class="card-header fw-bold">Weekly Expenses</div>
+          <div class="card-body">
+            <h5 class="card-title text-center fw-bold">₹ {{data["weeklyStats"]}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p hidden id="monthlyExpense">{{data["monthlyEx"]}}</p>
+    <p hidden id="weeklyExpense">{{data["weeklyEx"]}}</p>
+    <p hidden id="monthlyIncome">{{data["monthlyIn"]}}</p>
+    <p hidden id="weeklyIncome">{{data["weeklyIn"]}}</p>
+    <p hidden id="spendingHabits">{{data["habits"]}}</p>
+    <p hidden id="payers">{{data["payers"]}}</p>
+    
+
+    <!--////////-->
+    <!--Recent Expenses-->
+    <div class="mt-5 d-flex justify-content-between align-items-center">
+      <div class="fs-4 fw-bold">Recent Expenses</div>
+      <a href="{{ url_for('expense') }}" class="btn btn-outline-dark">View More</a>
+    </div>
+    <!--tables-->
+    <table class="table table-striped border mt-4">
+      <thead>
+        <tr>
+          <th scope="col">Description</th>
+          <th scope="col">Category</th>
+          <th scope="col">Date</th>
+          <th scope="col">Payer</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for expense in data["recent"] %}
+        <tr>
+          <td>{{expense.description}}</td>
+          <td>{{expense.category}}</td>
+          <td>{{expense.date}}</td>
+          <td>{{expense.payer}}</td>
+          <td>{{expense.amount}}</td>
+        </tr>
+        {% endfor %}        
+      </tbody>
+    </table>
+
+    <!--////
+    Budgets
+    <div class="mt-5 d-flex justify-content-between align-items-center">
+      <div class="fs-4 fw-bold">Your Budgets</div>
+      <div class="btn btn-outline-dark">Edit</div>
+    </div>
+    Budget graphs
+    <div class="mt-5 d-flex justify-content-between"></div>
+    -->
+
+    <!--///-->
+    <!--report-->   
+    <div class="d-flex flex-column mt-5 gap-4 flex-lg-row divide">
+      <div class="">
+
+        <div class="fs-4 mt-4 fw-bold text-center">Weekly Spending</div>
+        <div class="text-center my-3">Total spending per week of the last 4 weeks</div>
+        <!--chart-->
+        <div class="container">
+          <canvas id="week"></canvas>
+          <script>
+            const wlabels = [
+              'week 1',
+              'week 2',
+              'week 3',
+              'week 4',
+            ];
+          
+            const week = {
+              labels: wlabels,
+              datasets: [{
+                label: 'Expense',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: document.getElementById("weeklyExpense").innerHTML.replace("[","").replace("]","").split(','),
+              },
+              {
+                label: 'Income',
+                backgroundColor: '#3080d0',
+                borderColor: '#3080d0',
+                data: document.getElementById("weeklyIncome").innerHTML.replace("[","").replace("]","").split(','),
+              }
+            ]
+            };
+          
+            const wconfig = {
+              type: 'line',
+              data: week,
+              options: {}
+            };
+          </script>              
+        </div>
+
+      </div>
+      <div class="">
+
+        <div class="fs-4 mt-4 fw-bold text-center">Monthly Spending</div>
+        <div class="text-center my-3">Total spending per months</div> 
+        <!--chart-->
+        <div class="container">
+          <canvas id="month"></canvas>
+          <script>
+            const mlabels = [
+              'Jan',
+              'Feb',
+              'Mar',
+              'Apr',
+              'May',
+              'Jun',
+              'july',
+              'Aug',
+              'Sep',
+              'Oct',
+              'Nov',
+              'Dec',
+            ];
+            
+            const month = {
+              labels: mlabels,
+              datasets: [{
+                label: 'Expense',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: document.getElementById("monthlyExpense").innerHTML.replace("[","").replace("]","").split(','),
+              },
+              {
+                label: 'Income',
+                backgroundColor: '#3080d0',
+                borderColor: '#3080d0',
+                data: document.getElementById("monthlyIncome").innerHTML.replace("[","").replace("]","").split(','),
+              }
+            ]
+            };
+          
+            const mconfig = {
+              type: 'bar',
+              data: month,
+              options: {}
+            };
+          </script>              
+        </div>
+
+      </div>
+    </div>
+
+    <!--///-->
+    <!--Stats-->   
+    <div class="d-flex flex-column mt-5 gap-4 flex-lg-row divide">
+      <div class="">
+
+        <div class="fs-4 mt-4 fw-bold text-center">Spending Habits</div>
+        <div class="text-center my-3">Total spending per week of the last 4 weeks</div>
+        <!--chart-->
+        <div class="container">
+          <canvas id="habits"></canvas>
+          <script>
+            const hlabels = [
+              'Others',
+              'Housing',
+              'Travel',
+              'Personal Care',
+              'Giving',
+              'Food',
+              'Health',
+              'Savings',
+            ];
+          
+            const habit = {
+              labels: hlabels,
+              datasets: [{
+                label: 'Expense',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: document.getElementById("spendingHabits").innerHTML.replace("[","").replace("]","").split(','),
+                tension: 0.5,
+              },            
+            ]
+            };
+          
+            const hconfig = {
+              type: 'line',
+              data: habit,
+              options: {}
+            };
+          </script>              
+        </div>
+
+      </div>
+      <div class="">
+
+        <div class="fs-4 mt-4 fw-bold text-center">Payer Spendings</div>
+        <div class="text-center my-3">Total spending per months</div>
+        <!--chart-->
+        <div class="container">
+          <canvas id="payerGraph"></canvas>
+          <script>
+            const plabels = document.getElementById("payers").innerHTML.replace("[","").replace("]","").split(',');
+          
+            const payer = {
+              labels: plabels,
+              datasets: [{
+                label: 'Expense',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [60, 160, 50, 20],
+              },
+              {
+                label: 'Income',
+                backgroundColor: '#3080d0',
+                borderColor: '#3080d0',
+                data: [0, 100, 50, 250],
+              }]
+            };
+          
+            const pconfig = {
+              type: 'bar',
+              data: payer,
+              options: {}
+            };
+          </script>              
+        </div>
+
+      </div>
+    </div>    
+
+  </div>
+  <div class="border container-fluid py-3 text-center mt-5 fw-bold"> copyright reserved</div>
+  </section>
+
+  <!--Chart Js Configuration-->
+  <script>
+  const myChart = new Chart(
+    document.getElementById('week'),
+    wconfig
+  );
+  const months = new Chart(
+    document.getElementById('month'),
+    mconfig
+  );
+  const habits = new Chart(
+    document.getElementById('habits'),
+    hconfig
+  );
+  const payers = new Chart(
+    document.getElementById('payerGraph'),
+    pconfig
+  );
+  </script>
+
+{% endblock %}
